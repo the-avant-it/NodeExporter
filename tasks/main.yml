@@ -1,0 +1,56 @@
+---
+- become: yes
+  block:
+
+  - name: Create node_exporter group
+    group:
+      name: node_exporter
+      state: present
+
+  - name: Add node_exporter user
+    user:
+      name: node_exporter
+      groups: node_exporter
+      home: /opt/node_exporter/
+      shell: /bin/false
+      append: yes
+      createhome: no
+      state: present
+    
+  - name: Download
+    get_url:
+      url: https://github.com/prometheus/node_exporter/releases/download/v1.1.2/{{ binaries_file_name }}.tar.gz
+      dest: /tmp
+
+  - name: Unarchive
+    ansible.builtin.unarchive:
+      src: /tmp/{{ binaries_file_name }}.tar.gz
+      remote_src: yes
+      dest: /tmp
+
+  - name: Copy binaries to /usr/local/bin/
+    copy:
+      src: /tmp/{{ binaries_file_name }}/node_exporter
+      remote_src: yes 
+      dest: /usr/local/bin
+      owner: node_exporter
+      group: node_exporter
+      mode: u=rx,g=x,o=x
+
+  - name: Generate Systemd Service Unit file
+    template:
+      src: templates/node_exporter.service.j2
+      dest: /etc/systemd/system/node_exporter.service
+      mode: u=rw,g=r,o=r
+    notify: 
+    - Reload daemon    
+
+  - name: Enable on boot
+    ansible.builtin.systemd:
+      name: node_exporter.service
+      enabled: yes
+
+  - name: Start node_exporter
+    ansible.builtin.systemd:
+      name: node_exporter.service
+      state: started
