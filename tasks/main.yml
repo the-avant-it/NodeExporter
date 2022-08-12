@@ -33,7 +33,7 @@
 
   - name: Unarchive
     ansible.builtin.unarchive:
-      src: /tmp/{{ binaries_file_name }}.tar.gz
+      src: /tmp/{{ node_exporter.binaries_file_name }}.tar.gz
       remote_src: yes
       dest: /tmp
 
