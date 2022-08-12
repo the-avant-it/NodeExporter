@@ -1,5 +1,14 @@
 ---
+# Do not run this role every time
+- name: Find recent run marker
+  find:
+    paths: /tmp
+    pattern: '{{ role_name }}.{{ node_exporter.cache_key }}.run-marker'
+    age: -1h
+  register: run_marker
+
 - become: yes
+  when: run_marker.files | length == 0 or not node_exporter.enable_cache
   block:
 
   - name: Create node_exporter group
@@ -19,7 +28,7 @@
     
   - name: Download
     get_url:
-      url: https://github.com/prometheus/node_exporter/releases/download/v1.1.2/{{ binaries_file_name }}.tar.gz
+      url: https://github.com/prometheus/node_exporter/releases/download/v1.1.2/{{ node_exporter.binaries_file_name }}.tar.gz
       dest: /tmp
 
   - name: Unarchive
@@ -30,7 +39,7 @@
 
   - name: Copy binaries to /usr/local/bin/
     copy:
-      src: /tmp/{{ binaries_file_name }}/node_exporter
+      src: /tmp/{{ node_exporter.binaries_file_name }}/node_exporter
       remote_src: yes 
       dest: /usr/local/bin
       owner: node_exporter
@@ -54,3 +63,8 @@
     ansible.builtin.systemd:
       name: node_exporter.service
       state: started
+
+  - name: Create run marker
+    file:
+      path: /tmp/{{ role_name }}.{{ node_exporter.cache_key }}.run-marker
+      state: touch            
