@@ -28,7 +28,7 @@
     
   - name: Download
     get_url:
-      url: https://github.com/prometheus/node_exporter/releases/download/v1.1.2/{{ node_exporter.binaries_file_name }}.tar.gz
+      url: https://github.com/prometheus/node_exporter/releases/download/{{ node_exporter.version }}/{{ node_exporter.binaries_file_name }}.tar.gz
       dest: /tmp
 
   - name: Unarchive
