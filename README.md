@@ -4,6 +4,10 @@ Role for installing prometheus VM metrics exporter
 
 # Changelog
 
+## 2.1.1
+
+- Add /bin/sh -c 
+
 ## 2.1.0
 
 - Add optional node_exporter.version variable

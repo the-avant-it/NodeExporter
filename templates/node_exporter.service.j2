@@ -7,7 +7,8 @@ After=network-online.target
 User=node_exporter
 Group=node_exporter
 Type=simple
-ExecStart=/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }}"
+# For some reason it doesn't work on CentOs without "/bin/sh -c"
+ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }}"'
 
 [Install]
 WantedBy=multi-user.target
