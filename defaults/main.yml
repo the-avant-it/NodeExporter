@@ -1,5 +1,6 @@
 node_exporter: 
   exporter_port: 9100
+  version: v1.1.2
   binaries_file_name: node_exporter-1.1.2.linux-amd64
   enable_cache: yes
   cache_key: default
