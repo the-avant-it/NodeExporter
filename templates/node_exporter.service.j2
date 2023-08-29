@@ -4,11 +4,13 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+MemoryLimit=100M
 User=node_exporter
 Group=node_exporter
 Type=simple
 # For some reason it doesn't work on CentOs without "/bin/sh -c"
 ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }}"'
+Nice=-10
 
 [Install]
 WantedBy=multi-user.target
