@@ -31,12 +31,15 @@ All variables are set by default
 
 ```yaml
 node_exporter: 
+  # Optional
   exporter_port: 9100
+  # Optional
   version: v1.1.2
+  # Optional
   binaries_file_name: node_exporter-1.1.2.linux-amd64
-  # If the role already succeeded recently, do not execute task in it for an hour
+  # Optional. If the role already succeeded recently, do not execute task in it for an hour
   enable_cache: yes
-  # When cache_key changes the cache wil reset
+  # Optional. When cache_key changes the cache wil reset
   cache_key: default  
 ```  
 
