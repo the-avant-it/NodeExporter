@@ -58,11 +58,21 @@
     ansible.builtin.systemd:
       name: node_exporter.service
       enabled: yes
+    ignore_errors: "{{ node_exporter.ignore_systemd_errors }}"
 
   - name: Start node_exporter
     ansible.builtin.systemd:
       name: node_exporter.service
       state: started
+    ignore_errors: "{{ node_exporter.ignore_systemd_errors }}"
+    register: r
+
+  - name: Create cron for starting node exporter in case if systemd is not available at a time when role is running (e.g. during docker build)
+    ansible.builtin.cron:
+      name: Start node_exporter
+      special_time: reboot
+      job: systemctl start node_exporter.service
+    when: r is failed 
 
   - name: Create run marker
     file:

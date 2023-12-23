@@ -4,6 +4,11 @@ Role for installing prometheus VM metrics exporter
 
 # Changelog
 
+## 2.2.0
+
+- Add Create cron for starting node exporter in case if systemd is not available at a time when role is running
+- Add optional var ignore_systemd_errors
+
 ## 2.1.2
 
 - #T2326 🐫 Доработать роль установки нод экспортеров чтобы они не падали когда сервер перегружен 
