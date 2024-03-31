@@ -5,11 +5,12 @@ After=network-online.target
 
 [Service]
 MemoryLimit=100M
+{{ node_exporter.memory_limit }}
 User=node_exporter
 Group=node_exporter
 Type=simple
 # For some reason it doesn't work on CentOs without "/bin/sh -c"
-ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }}"'
+ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }} {{ node_exporter.extra_arguments }}"'
 Nice=-10
 
 [Install]

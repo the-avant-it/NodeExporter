@@ -4,6 +4,11 @@ Role for installing prometheus VM metrics exporter
 
 # Changelog
 
+## 2.2.1
+
+- Move parametr  memory_limit to group vars
+- Add extra_arguments to start service
+
 ## 2.2.0
 
 - Add Create cron for starting node exporter in case if systemd is not available at a time when role is running

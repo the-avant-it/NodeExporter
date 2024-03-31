@@ -5,3 +5,5 @@ node_exporter:
   enable_cache: yes
   cache_key: default
   ignore_systemd_errors: no
+  memory_limit: 100M
+  extra_arguments: ""
