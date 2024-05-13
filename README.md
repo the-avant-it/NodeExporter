@@ -9,6 +9,12 @@ Role for installing prometheus VM metrics exporter
 - Move parametr  memory_limit to group vars
 - Add extra_arguments to start service
 
+```yaml
+node_exporter:
+  memory_limit: 100M
+  extra_arguments: ""
+```
+
 ## 2.2.0
 
 - Add Create cron for starting node exporter in case if systemd is not available at a time when role is running
@@ -51,6 +57,8 @@ node_exporter:
   enable_cache: yes
   # Optional. When cache_key changes the cache wil reset
   cache_key: default  
+  memory_limit: 100M
+  extra_arguments: ""
 ```  
 
 ### Secret
