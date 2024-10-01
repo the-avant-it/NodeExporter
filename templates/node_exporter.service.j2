@@ -10,7 +10,11 @@ User=node_exporter
 Group=node_exporter
 Type=simple
 # For some reason it doesn't work on CentOs without "/bin/sh -c"
+{% if node_exporter.extra_arguments %}
 ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }} {{ node_exporter.extra_arguments }}"'
+{% else %}
+ExecStart=/bin/sh -c '/usr/local/bin/node_exporter --web.listen-address=":{{ node_exporter.exporter_port }}"'
+{% endif %}
 Nice=-10
 
 [Install]

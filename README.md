@@ -4,6 +4,10 @@ Role for installing prometheus VM metrics exporter
 
 # Changelog
 
+## 2.2.2
+
+- Fix critical error!
+
 ## 2.2.1
 
 - Move parametr  memory_limit to group vars
