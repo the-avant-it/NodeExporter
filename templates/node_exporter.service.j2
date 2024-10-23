@@ -4,8 +4,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-MemoryLimit=100M
-{{ node_exporter.memory_limit }}
+MemoryLimit={{ node_exporter.memory_limit }}
 User=node_exporter
 Group=node_exporter
 Type=simple
