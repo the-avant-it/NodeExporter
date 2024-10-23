@@ -4,6 +4,10 @@ Role for installing prometheus VM metrics exporter
 
 # Changelog
 
+## 2.2.3
+
+Fix vars in unitfile 
+
 ## 2.2.2
 
 - Fix critical error!
