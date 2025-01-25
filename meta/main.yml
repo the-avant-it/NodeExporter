@@ -3,6 +3,7 @@ galaxy_info:
   description: Role for installing prometheus VM metrics exporter
   company: Radmir Gataullin
   role_name: common_nodeexporter
+  namespace: radmir_gataullin
 
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value

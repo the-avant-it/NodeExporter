@@ -1,0 +1,25 @@
+#!/bin/bash
+
+patterns=(
+blc.am
+ecos.am
+smartshell.gg
+smartshell.dev
+smartshell.io
+chorons.mg
+piklema.com
+piklema.ru
+ecosapi.link
+k2t.app)
+
+for p in ${patterns[@]}; do
+echo $p
+git rev-list --all | while read commit; do
+#  echo "Commit: $commit"
+  git ls-tree -r --name-only "$commit" | while read file; do
+#    echo "File: $file"
+    git show "$commit:$file" | grep "$p" && echo "Found in $file of $commit"
+  done
+done
+
+done

@@ -1,0 +1,58 @@
+---
+- name: Verify Node Exporter Installation
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ensure Node Exporter binary is installed
+      ansible.builtin.command:
+        cmd: node_exporter --version
+      register: node_exporter_version
+      failed_when: "'node_exporter' not in node_exporter_version.stderr"
+
+    - name: Ensure Node Exporter service is running
+      ansible.builtin.service:
+        name: node_exporter
+        state: started
+      register: node_exporter_service_status
+      failed_when: node_exporter_service_status.status.ActiveState != 'active'
+
+    - name: Ensure Node Exporter service is enabled
+      ansible.builtin.service:
+        name: node_exporter
+        enabled: true
+
+    - name: Ensure Node Exporter binary is in /usr/local/bin
+      ansible.builtin.stat:
+        path: /usr/local/bin/node_exporter
+      register: node_exporter_binary
+      failed_when: not node_exporter_binary.stat.exists
+
+    - name: Ensure Node Exporter port 9100 is listening
+      ansible.builtin.command:
+        cmd: netstat -tuln | grep ':9100 '
+      register: node_exporter_port
+      failed_when: node_exporter_port.rc != 0
+
+    - name: Ensure Node Exporter metrics endpoint is reachable
+      ansible.builtin.uri:
+        url: http://localhost:9100/metrics
+        method: GET
+        status_code: 200
+        return_content: true  # Включаем возврат содержимого ответа
+      register: node_exporter_metrics
+      failed_when: "'HELP' not in node_exporter_metrics.content"
+
+    - name: Check key metrics in Node Exporter output
+      ansible.builtin.command:
+        cmd: curl -s http://localhost:9100/metrics | grep 'node_cpu_seconds_total'
+      register: node_cpu_metrics
+      failed_when: "'HELP' not in node_cpu_metrics.stdout"
+
+    - name: Ensure Node Exporter responds within 2 seconds
+      ansible.builtin.uri:
+        url: http://localhost:9100/metrics
+        method: GET
+        status_code: 200
+        return_content: no
+      register: response_time
+      failed_when: response_time.elapsed > 2
